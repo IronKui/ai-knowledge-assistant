@@ -63,7 +63,7 @@ DeepSeek 生成回答 → 返回答案 + 溯源信息
 
 ### Agent 层
 
-基于 LangGraph 构建 Agent，挂载三个工具：
+基于 LangChain 的 `create_agent` 构建工具调用型 Agent，挂载三个工具：
 
 | 工具 | 作用 |
 |:---|:---|
@@ -71,7 +71,12 @@ DeepSeek 生成回答 → 返回答案 + 溯源信息
 | `quiz_tool` | 根据知识库内容出题 |
 | `evaluate_tool` | 评判用户答案，给出得分与解析 |
 
-支持三种模式切换（学习 / 面试 / 角色扮演），通过系统 Prompt 区分行为。
+- 会话状态用 LangGraph 的 `SqliteSaver` 做 checkpoint 持久化，
+  `thread_id` 采用 `user_id:session_id` 复合键，实现「用户 + 会话」双维隔离
+- 用户上下文通过 `context_schema` 运行时注入，Agent 按模式全局复用，
+  避免按用户或会话创建实例导致内存膨胀
+- 长对话由摘要中间件处理：历史超 4000 token 自动压缩，保留最近 2000 token
+- 支持 4 种模式（学习 / 面试 / 角色扮演 / 默认），通过系统 Prompt 区分行为
 
 ---
 
@@ -90,7 +95,7 @@ DeepSeek 生成回答 → 返回答案 + 溯源信息
 | 指标 | 含义 | 为什么看它 |
 |:---|:---|:---|
 | **Recall@K** | 前 K 条中命中标准答案的比例 | 衡量「找不找得到」——决定生成阶段有没有正确素材 |
-| **MRR** | 首个命中结果排名的倒均值 | 衡量「第一条对不对」——LLM 对靠前内容注意力更高 |
+| **MRR** | 首个命中结果排名的倒数均值 | 衡量「第一条对不对」——LLM 对靠前内容注意力更高 |
 | **NDCG@K** | 折损累积增益归一化 | 综合衡量「命中且靠前」 |
 
 > 命中判定：chunk 与标准片段均做去空白归一化后包含匹配，规避 PDF 抽取时中文与数字间插空格的干扰。
@@ -152,7 +157,24 @@ export HF_ENDPOINT=https://hf-mirror.com     # Windows: $env:HF_ENDPOINT="https:
 
 可利用 `backend/evaluation/download_reranker.py` 辅助下载。
 
-### 3. 配置环境变量
+### 3. 下载评测语料（**跑评测才需要**）
+
+评测集基于《阿里巴巴 Java 开发手册》v1.4.0 构建，该文档版权归原作者所有，**不入库**。
+如需复现评测数据，请自行下载 PDF 并放置到：
+
+```
+backend/evaluation/docs/阿里巴巴Java开发手册v1.4.0.pdf
+```
+
+可从阿里官方 p3c 项目或其公开 CDN 获取，例如：
+
+```
+https://ucc.alicdn.com/download/%E9%98%BF%E9%87%8C%E5%B7%B4%E5%B7%B4Java%E5%BC%80%E5%8F%91%E6%89%8B%E5%86%8C1.4.0.pdf
+```
+
+> 只跑问答主流程不需要这一步，跳过即可。
+
+### 4. 配置环境变量
 
 ```bash
 cp backend/.env.example backend/.env     # Windows: copy
@@ -160,7 +182,7 @@ cp backend/.env.example backend/.env     # Windows: copy
 
 填入 DeepSeek API Key 与 JWT 密钥（生成：`python -c "import secrets; print(secrets.token_hex(32))"`）。
 
-### 4. 启动 Redis（可选）
+### 5. 启动 Redis（可选）
 
 未启动时缓存功能自动降级，不影响主流程。
 
@@ -168,7 +190,7 @@ cp backend/.env.example backend/.env     # Windows: copy
 redis-server
 ```
 
-### 5. 启动后端
+### 6. 启动后端
 
 ```bash
 cd backend
@@ -177,7 +199,7 @@ uvicorn app:app --reload
 
 API 文档：http://127.0.0.1:8000/docs
 
-### 6. 启动前端
+### 7. 启动前端
 
 ```bash
 cd frontend
@@ -210,10 +232,11 @@ npm run dev
 │   ├── evaluation/             # 检索效果评测体系 ⭐
 │   │   ├── eval_dataset.json   # 50 条人工标注评测集
 │   │   ├── evaluate.py         # 指标实现（Recall@K / MRR / NDCG@K）
-│   │   ├── experiment*.py      # 阶段 A/B/C/D 对照实验
-│   │   ├── hybrid.py           # BM25 混合检索（实验）
+│   │   ├── experiment*.py      # 阶段 A/B/C 对照实验
+│   │   ├── hybrid.py           # BM25 混合检索（实验中，暂无结论）
 │   │   ├── REPORT.md           # 完整实验报告
-│   │   └── results/            # 实验数据
+│   │   ├── results/            # 实验数据
+│   │   └── docs/               # 评测语料 PDF（需自行下载，不入库）
 │   └── models/                 # 模型权重（需自行下载，不入库）
 └── frontend/                   # 前端（Vue 3 + Vite）
     └── src/
