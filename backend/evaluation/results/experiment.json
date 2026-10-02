@@ -1,0 +1,69 @@
+{
+  "dataset_size": 50,
+  "runs": {
+    "A1 chunk=300/ov=10  k=3": {
+      "recall_at_k": 0.72,
+      "mrr": 0.6933,
+      "ndcg_at_k": 0.7,
+      "k": 3,
+      "total": 50,
+      "hit_count": 36
+    },
+    "A2 chunk=500/ov=10  k=3": {
+      "recall_at_k": 0.74,
+      "mrr": 0.65,
+      "ndcg_at_k": 0.6731,
+      "k": 3,
+      "total": 50,
+      "hit_count": 37
+    },
+    "A3 chunk=800/ov=10  k=3": {
+      "recall_at_k": 0.8,
+      "mrr": 0.65,
+      "ndcg_at_k": 0.6883,
+      "k": 3,
+      "total": 50,
+      "hit_count": 40
+    },
+    "B1 向量召回10 → 重排取3": {
+      "recall_at_k": 0.9,
+      "mrr": 0.8867,
+      "ndcg_at_k": 0.89,
+      "k": 3,
+      "total": 50,
+      "hit_count": 45
+    },
+    "B2 向量召回20 → 重排取3": {
+      "recall_at_k": 0.94,
+      "mrr": 0.94,
+      "ndcg_at_k": 0.94,
+      "k": 3,
+      "total": 50,
+      "hit_count": 47
+    },
+    "B3 向量召回20 → 重排取5": {
+      "recall_at_k": 0.96,
+      "mrr": 0.945,
+      "ndcg_at_k": 0.9486,
+      "k": 5,
+      "total": 50,
+      "hit_count": 48
+    },
+    "C1 chunk=800 召回20 → 重排3": {
+      "recall_at_k": 0.76,
+      "mrr": 0.6967,
+      "ndcg_at_k": 0.7131,
+      "k": 3,
+      "total": 50,
+      "hit_count": 38
+    },
+    "C2 chunk=800 召回20 → 重排5": {
+      "recall_at_k": 0.86,
+      "mrr": 0.7197,
+      "ndcg_at_k": 0.7544,
+      "k": 5,
+      "total": 50,
+      "hit_count": 43
+    }
+  }
+}

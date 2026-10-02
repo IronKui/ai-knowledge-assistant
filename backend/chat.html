@@ -1,0 +1,1238 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 知识库</title>
+    <style>
+        /* ============================================
+           现代 SaaS · Clean Light
+           浅灰底 / 白色卡片 / 靛蓝点缀
+           ============================================ */
+        :root {
+            --bg:            #fafafa;
+            --surface:       #ffffff;
+            --surface-2:     #f4f4f5;
+            --surface-3:     #ebebed;
+            --border:        #e4e4e7;
+            --border-strong: #d4d4d8;
+
+            --text:          #18181b;
+            --text-2:        #52525b;
+            --text-3:        #a1a1aa;
+
+            --primary:       #6366f1;
+            --primary-hover: #4f46e5;
+            --primary-soft:  #eef2ff;
+            --primary-ring:  rgba(99, 102, 241, 0.14);
+
+            --danger:        #ef4444;
+            --success:       #10b981;
+
+            --radius-sm: 8px;
+            --radius:    12px;
+            --radius-lg: 16px;
+
+            --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.04);
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.03);
+            --shadow-md: 0 4px 14px rgba(0, 0, 0, 0.07);
+            --shadow-lg: 0 12px 36px rgba(0, 0, 0, 0.1);
+
+            --font: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+                    "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+            --font-mono: "SF Mono", "JetBrains Mono", Consolas, monospace;
+
+            --ease: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: var(--font);
+            color: var(--text);
+            background: var(--bg);
+            height: 100vh;
+            overflow: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ============================================
+           登录页
+           ============================================ */
+        .auth-page {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: var(--bg);
+            background-image:
+                radial-gradient(circle at 20% 10%, rgba(99, 102, 241, 0.07), transparent 42%),
+                radial-gradient(circle at 85% 90%, rgba(6, 182, 212, 0.06), transparent 42%);
+            position: relative;
+        }
+
+        .auth-card {
+            width: 396px;
+            padding: 44px 40px 38px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            animation: cardIn 0.5s var(--ease) both;
+        }
+
+        @keyframes cardIn {
+            from { opacity: 0; transform: translateY(12px) scale(0.99); }
+            to   { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* 品牌图标 */
+        .auth-card::before {
+            content: "◆";
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 46px;
+            height: 46px;
+            margin-bottom: 22px;
+            background: var(--primary);
+            color: #fff;
+            font-size: 18px;
+            border-radius: var(--radius);
+            box-shadow: 0 6px 16px rgba(99, 102, 241, 0.3);
+        }
+
+        .auth-card h1 {
+            font-size: 23px;
+            font-weight: 650;
+            letter-spacing: -0.02em;
+            color: var(--text);
+            margin-bottom: 6px;
+        }
+
+        .auth-card .subtitle {
+            font-size: 13.5px;
+            color: var(--text-3);
+            margin-bottom: 30px;
+        }
+
+        .auth-error {
+            font-size: 13px;
+            color: var(--danger);
+            margin-bottom: 12px;
+            min-height: 18px;
+        }
+
+        .auth-card label {
+            display: block;
+            font-size: 12.5px;
+            font-weight: 550;
+            color: var(--text-2);
+            margin-bottom: 7px;
+        }
+
+        .auth-card input {
+            width: 100%;
+            padding: 11px 13px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-family: var(--font);
+            font-size: 14px;
+            color: var(--text);
+            margin-bottom: 18px;
+            outline: none;
+            transition: border-color 0.18s var(--ease), box-shadow 0.18s var(--ease);
+        }
+
+        .auth-card input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-ring);
+        }
+
+        .auth-card input::placeholder { color: var(--text-3); }
+
+        .auth-btn {
+            width: 100%;
+            padding: 12px;
+            margin-top: 6px;
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-family: var(--font);
+            font-size: 14px;
+            font-weight: 550;
+            cursor: pointer;
+            transition: background 0.18s var(--ease), transform 0.12s var(--ease);
+        }
+
+        .auth-btn:hover { background: var(--primary-hover); }
+        .auth-btn:active { transform: scale(0.985); }
+
+        .auth-switch {
+            text-align: center;
+            margin-top: 22px;
+            font-size: 13.5px;
+            color: var(--text-3);
+        }
+
+        .auth-switch a {
+            color: var(--primary);
+            cursor: pointer;
+            font-weight: 550;
+            margin-left: 4px;
+        }
+
+        .auth-switch a:hover { text-decoration: underline; }
+
+        /* ============================================
+           主应用
+           ============================================ */
+        .app-page {
+            display: none;
+            height: 100vh;
+        }
+
+        .app-page.active { display: flex; }
+
+        /* ---------- 侧边栏 ---------- */
+        .sidebar {
+            width: 264px;
+            flex-shrink: 0;
+            background: var(--surface);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            animation: slideIn 0.4s var(--ease) both;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-8px); }
+            to   { opacity: 1; transform: translateX(0); }
+        }
+
+        .sidebar-header {
+            padding: 18px 16px 12px;
+        }
+
+        .app-name {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            font-size: 15px;
+            font-weight: 650;
+            letter-spacing: -0.01em;
+            color: var(--text);
+        }
+
+        .app-name::before {
+            content: "◆";
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 25px;
+            height: 25px;
+            background: var(--primary);
+            color: #fff;
+            font-size: 10px;
+            border-radius: 7px;
+        }
+
+        .user-info {
+            font-size: 12.5px;
+            color: var(--text-3);
+            margin-top: 9px;
+            padding-left: 34px;
+        }
+
+        .new-chat-btn {
+            margin: 6px 12px 14px;
+            padding: 9px 14px;
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-family: var(--font);
+            font-size: 13.5px;
+            font-weight: 550;
+            cursor: pointer;
+            transition: background 0.18s var(--ease), box-shadow 0.18s var(--ease);
+        }
+
+        .new-chat-btn:hover {
+            background: var(--primary-hover);
+            box-shadow: 0 3px 10px rgba(99, 102, 241, 0.28);
+        }
+
+        .sidebar-section {
+            padding: 4px 12px;
+            flex: 1;
+            overflow-y: auto;
+            min-height: 0;
+        }
+
+        .sidebar-section h3 {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            color: var(--text-3);
+            text-transform: uppercase;
+            padding: 10px 6px 8px;
+        }
+
+        /* 会话项 */
+        .session-item {
+            padding: 8px 10px;
+            font-size: 13.5px;
+            color: var(--text-2);
+            cursor: pointer;
+            border-radius: var(--radius-sm);
+            margin-bottom: 1px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: background 0.15s var(--ease), color 0.15s var(--ease);
+        }
+
+        .session-item:hover { background: var(--surface-2); color: var(--text); }
+
+        .session-item.active {
+            background: var(--primary-soft);
+            color: var(--primary);
+            font-weight: 550;
+        }
+
+        .session-title {
+            flex: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .session-menu {
+            opacity: 0;
+            cursor: pointer;
+            padding: 0 3px;
+            font-size: 15px;
+            line-height: 1;
+            color: var(--text-3);
+            border-radius: 4px;
+            transition: opacity 0.15s, color 0.15s;
+        }
+
+        .session-item:hover .session-menu { opacity: 1; }
+        .session-menu:hover { color: var(--text); background: var(--surface-3); }
+
+        /* 文件项 */
+        .file-item {
+            padding: 7px 10px;
+            font-size: 13px;
+            color: var(--text-2);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-radius: var(--radius-sm);
+            transition: background 0.15s;
+        }
+
+        .file-item:hover { background: var(--surface-2); }
+
+        .file-item .file-icon {
+            font-size: 9px;
+            color: var(--primary);
+            opacity: 0.75;
+        }
+
+        .file-item .file-name {
+            flex: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .file-item .delete-btn {
+            opacity: 0;
+            cursor: pointer;
+            color: var(--text-3);
+            font-size: 11px;
+            padding: 1px 4px;
+            border-radius: 4px;
+            transition: opacity 0.15s, color 0.15s, background 0.15s;
+        }
+
+        .file-item:hover .delete-btn { opacity: 1; }
+        .file-item .delete-btn:hover { color: var(--danger); background: #fef2f2; }
+
+        /* 模式切换 */
+        .mode-section {
+            padding: 14px 12px;
+            border-top: 1px solid var(--border);
+            flex: none;
+        }
+
+        .mode-section h3 {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            color: var(--text-3);
+            text-transform: uppercase;
+            padding: 0 6px 8px;
+        }
+
+        .mode-btn {
+            display: block;
+            width: 100%;
+            padding: 7px 10px;
+            margin-bottom: 2px;
+            background: transparent;
+            border: none;
+            border-radius: var(--radius-sm);
+            color: var(--text-2);
+            font-family: var(--font);
+            font-size: 13px;
+            text-align: left;
+            cursor: pointer;
+            transition: background 0.15s var(--ease), color 0.15s var(--ease);
+        }
+
+        .mode-btn:hover { background: var(--surface-2); color: var(--text); }
+
+        .mode-btn.active {
+            background: var(--primary-soft);
+            color: var(--primary);
+            font-weight: 550;
+        }
+
+        /* 底部 */
+        .sidebar-footer {
+            padding: 12px 16px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12.5px;
+        }
+
+        .sidebar-footer span { color: var(--text-3); }
+
+        .logout-btn {
+            background: none;
+            border: none;
+            color: var(--text-3);
+            font-family: var(--font);
+            font-size: 12.5px;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 6px;
+            transition: color 0.15s, background 0.15s;
+        }
+
+        .logout-btn:hover { color: var(--danger); background: #fef2f2; }
+
+        /* ---------- 主内容区 ---------- */
+        .main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            background: var(--bg);
+        }
+
+        .main-header {
+            padding: 15px 28px;
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .chat-title {
+            font-size: 15px;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            color: var(--text);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .chat-mode {
+            flex-shrink: 0;
+            font-size: 12px;
+            font-weight: 550;
+            color: var(--primary);
+            background: var(--primary-soft);
+            padding: 4px 11px;
+            border-radius: 999px;
+        }
+
+        /* 消息区 */
+        .messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 28px 28px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .empty-state {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: var(--text-3);
+            gap: 14px;
+            animation: fadeIn 0.5s var(--ease) both;
+        }
+
+        .empty-state .icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 62px;
+            height: 62px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            color: var(--primary);
+            font-size: 24px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .empty-state .hint { font-size: 13.5px; }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* 消息气泡 */
+        .message {
+            max-width: 68%;
+            padding: 11px 15px;
+            font-size: 14px;
+            line-height: 1.7;
+            white-space: pre-wrap;
+            word-break: break-word;
+            animation: msgIn 0.3s var(--ease) both;
+        }
+
+        @keyframes msgIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .message.user {
+            align-self: flex-end;
+            background: var(--primary);
+            color: #fff;
+            border-radius: var(--radius) var(--radius) 3px var(--radius);
+            box-shadow: 0 2px 8px rgba(99, 102, 241, 0.22);
+        }
+
+        .message.assistant {
+            align-self: flex-start;
+            background: var(--surface);
+            color: var(--text-2);
+            border: 1px solid var(--border);
+            border-radius: var(--radius) var(--radius) var(--radius) 3px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .message.assistant .source {
+            display: block;
+            margin-top: 10px;
+            padding-top: 9px;
+            border-top: 1px solid var(--border);
+            font-family: var(--font-mono);
+            font-size: 11.5px;
+            color: var(--text-3);
+        }
+
+        .message.loading {
+            align-self: flex-start;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius) var(--radius) var(--radius) 3px;
+            color: var(--text-3);
+            font-size: 13px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* 加载动画：三点 */
+        .message.loading::after {
+            content: "";
+            display: inline-block;
+            width: 3px;
+            height: 3px;
+            margin-left: 6px;
+            border-radius: 50%;
+            background: var(--text-3);
+            animation: dots 1.2s infinite;
+            box-shadow: 6px 0 0 var(--text-3), 12px 0 0 var(--text-3);
+        }
+
+        @keyframes dots {
+            0%, 60%, 100% { opacity: 0.3; }
+            30% { opacity: 1; }
+        }
+
+        .message.error {
+            align-self: center;
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            color: var(--danger);
+            font-size: 13px;
+            border-radius: var(--radius-sm);
+            max-width: 80%;
+        }
+
+        /* ---------- 输入区 ---------- */
+        .input-area {
+            padding: 0 28px 26px;
+        }
+
+        .file-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            font-size: 12.5px;
+            animation: msgIn 0.25s var(--ease) both;
+        }
+
+        .file-info .file-name {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--primary);
+            background: var(--primary-soft);
+            padding: 4px 10px;
+            border-radius: 6px;
+        }
+
+        .file-info select {
+            padding: 4px 8px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-family: var(--font);
+            font-size: 12px;
+            color: var(--text-2);
+            outline: none;
+            cursor: pointer;
+        }
+
+        .file-info .cancel-btn {
+            margin-left: auto;
+            background: none;
+            border: none;
+            color: var(--text-3);
+            font-family: var(--font);
+            font-size: 12.5px;
+            cursor: pointer;
+            padding: 3px 8px;
+            border-radius: 6px;
+            transition: color 0.15s, background 0.15s;
+        }
+
+        .file-info .cancel-btn:hover { color: var(--danger); background: #fef2f2; }
+
+        .input-box {
+            display: flex;
+            align-items: flex-end;
+            gap: 10px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 8px 10px 8px 12px;
+            box-shadow: var(--shadow-sm);
+            transition: border-color 0.18s var(--ease), box-shadow 0.18s var(--ease);
+        }
+
+        .input-box:focus-within {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-ring);
+        }
+
+        .upload-btn {
+            background: none;
+            border: none;
+            color: var(--text-3);
+            font-size: 19px;
+            line-height: 1;
+            cursor: pointer;
+            padding: 2px 5px;
+            border-radius: 6px;
+            transition: color 0.15s, background 0.15s;
+        }
+
+        .upload-btn:hover { color: var(--primary); background: var(--primary-soft); }
+
+        .input-box textarea {
+            flex: 1;
+            background: transparent;
+            border: none;
+            outline: none;
+            resize: none;
+            font-family: var(--font);
+            font-size: 14px;
+            line-height: 1.6;
+            color: var(--text);
+            padding: 3px 0;
+            min-height: 25px;
+            max-height: 140px;
+        }
+
+        .input-box textarea::placeholder { color: var(--text-3); }
+
+        .send-btn {
+            flex-shrink: 0;
+            padding: 7px 16px;
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-family: var(--font);
+            font-size: 13.5px;
+            font-weight: 550;
+            cursor: pointer;
+            transition: background 0.18s var(--ease);
+        }
+
+        .send-btn:hover { background: var(--primary-hover); }
+        .send-btn:disabled { background: var(--surface-3); color: var(--text-3); cursor: not-allowed; }
+
+        /* ---------- 滚动条 ---------- */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-strong);
+            border-radius: 5px;
+            border: 2px solid transparent;
+            background-clip: content-box;
+        }
+        ::-webkit-scrollbar-thumb:hover { background: var(--text-3); background-clip: content-box; }
+    </style>
+</head>
+<body>
+    <!-- ====== 登录/注册页 ====== -->
+    <div class="auth-page" id="authPage">
+        <div class="auth-card">
+            <h1>AI 知识库</h1>
+            <div class="subtitle" id="authSubtitle">企业级 RAG 知识库问答系统</div>
+            <div class="auth-error" id="authError"></div>
+
+            <!-- 登录表单 -->
+            <form id="loginForm" onsubmit="return handleLogin(event)">
+                <label>用户名</label>
+                <input type="text" id="loginUsername" placeholder="请输入用户名" required>
+                <label>密码</label>
+                <input type="password" id="loginPassword" placeholder="请输入密码" required>
+                <button type="submit" class="auth-btn">登录</button>
+            </form>
+
+            <!-- 注册表单（默认隐藏） -->
+            <form id="registerForm" style="display:none" onsubmit="return handleRegister(event)">
+                <label>用户名</label>
+                <input type="text" id="regUsername" placeholder="请输入用户名" required>
+                <label>密码</label>
+                <input type="password" id="regPassword" placeholder="请输入密码（至少6位）" required minlength="6">
+                <label>昵称（可选）</label>
+                <input type="text" id="regNickname" placeholder="展示昵称">
+                <button type="submit" class="auth-btn">注册</button>
+            </form>
+
+            <div class="auth-switch" id="authSwitch">
+                <span>还没有账号？</span>
+                <a onclick="toggleAuthMode()">立即注册</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ====== 主应用 ====== -->
+    <div class="app-page" id="appPage">
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <div class="app-name">AI 知识库</div>
+                <div class="user-info" id="userInfo">未登录</div>
+            </div>
+            <button class="new-chat-btn" onclick="newChat()">＋ 新建会话</button>
+
+            <div class="sidebar-section">
+                <h3>会话</h3>
+                <div id="sessionList"></div>
+            </div>
+
+            <div class="sidebar-section">
+                <h3>知识库文件</h3>
+                <div id="fileList"></div>
+            </div>
+
+            <div class="mode-section">
+                <h3>模式</h3>
+                <button class="mode-btn active" onclick="switchMode('default')">默认</button>
+                <button class="mode-btn" onclick="switchMode('learning')">学习模式</button>
+                <button class="mode-btn" onclick="switchMode('interview')">面试模式</button>
+                <button class="mode-btn" onclick="switchMode('roleplay')">角色扮演</button>
+            </div>
+
+            <div class="sidebar-footer">
+                <span id="footerUser"></span>
+                <button class="logout-btn" onclick="logout()">退出登录</button>
+            </div>
+        </div>
+
+        <div class="main">
+            <div class="main-header">
+                <span class="chat-title" id="chatTitle">新会话</span>
+                <span class="chat-mode" id="chatMode">默认</span>
+            </div>
+            <div class="messages" id="messages">
+                <div class="empty-state" id="emptyState">
+                    <div class="icon">◆</div>
+                    <div class="hint">上传文档或输入问题，开始使用知识库</div>
+                </div>
+            </div>
+            <div class="input-area">
+                <div class="file-info" id="fileInfo" style="display:none;">
+                    <span class="file-name" id="fileName"></span>
+                    <select id="scopeSelect" onchange="currentScope = this.value">
+                        <option value="account">账号级 · 所有会话共享</option>
+                        <option value="session">会话级 · 仅当前会话</option>
+                    </select>
+                    <button class="cancel-btn" onclick="cancelFile()">取消</button>
+                </div>
+                <div class="input-box">
+                    <input type="file" id="fileInput" style="display:none;" accept=".pdf,.docx,.md,.txt">
+                    <button class="upload-btn" onclick="document.getElementById('fileInput').click()" title="上传文件">＋</button>
+                    <textarea id="questionInput" rows="1" placeholder="输入你的问题…（Enter 发送，Shift+Enter 换行）"
+                        onkeydown="handleKey(event)"></textarea>
+                    <button class="send-btn" id="sendBtn" onclick="sendMessage()">发送</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ====== 配置 ======
+        const BASE_URL = "http://localhost:8000";
+
+        // ====== 状态 ======
+        let authToken = null;
+        let userUuid = null;
+        let currentMode = "default";
+        let currentSessionId = null;
+        let selectedFile = null;
+        let currentScope = "account";   // 文件可见范围：account=账号级 / session=会话级
+        let sessions = [];
+        let sessionCache = {};   // session_id -> 消息数组（前端缓存，切走再回来不重新加载）
+        let userFiles = [];
+
+        // ====== 工具 ======
+        function $(id) { return document.getElementById(id); }
+
+        async function api(url, options = {}) {
+            const headers = { ...(options.headers || {}) };
+            if (authToken) headers['Authorization'] = `Bearer ${authToken}`;
+            const res = await fetch(BASE_URL + url, { ...options, headers });
+            return res.json();
+        }
+
+        function showAuthError(msg) { $('authError').textContent = msg; }
+
+        // ====== 认证 ======
+        let isRegisterMode = false;
+        function toggleAuthMode() {
+            isRegisterMode = !isRegisterMode;
+            $('loginForm').style.display = isRegisterMode ? 'none' : 'block';
+            $('registerForm').style.display = isRegisterMode ? 'block' : 'none';
+            $('authSwitch').innerHTML = isRegisterMode
+                ? '<span>已有账号？</span><a onclick="toggleAuthMode()">立即登录</a>'
+                : '<span>还没有账号？</span><a onclick="toggleAuthMode()">立即注册</a>';
+            showAuthError('');
+        }
+
+        async function handleRegister(e) {
+            e.preventDefault();
+            const username = $('regUsername').value.trim();
+            const password = $('regPassword').value;
+            const nickname = $('regNickname').value.trim();
+            if (!username || !password) { showAuthError('请填写用户名和密码'); return false; }
+            try {
+                const data = await api('/api/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password, nickname })
+                });
+                if (data.code === 0) {
+                    authToken = data.data.token;
+                    userUuid = data.data.user_uuid;
+                    enterApp(username);
+                } else {
+                    showAuthError(data.message);
+                }
+            } catch (err) { showAuthError('注册请求失败：' + err.message); }
+            return false;
+        }
+
+        async function handleLogin(e) {
+            e.preventDefault();
+            const username = $('loginUsername').value.trim();
+            const password = $('loginPassword').value;
+            if (!username || !password) { showAuthError('请填写用户名和密码'); return false; }
+            try {
+                const data = await api('/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+                if (data.code === 0) {
+                    authToken = data.data.token;
+                    userUuid = data.data.user_uuid;
+                    enterApp(username);
+                } else {
+                    showAuthError(data.message);
+                }
+            } catch (err) { showAuthError('登录请求失败：' + err.message); }
+            return false;
+        }
+
+        async function enterApp(username) {
+            $('authPage').style.display = 'none';
+            $('appPage').classList.add('active');
+            $('userInfo').textContent = username;
+            $('footerUser').textContent = username;
+            // 登录后加载会话列表 + 文件列表
+            await loadSessions();
+            loadFiles();
+            newChat();
+        }
+
+        async function loadSessions() {
+            try {
+                const data = await api('/api/sessions');
+                if (data.code === 0) {
+                    sessions = data.data.map(s => ({
+                        id: s.session_id,
+                        title: s.session_name || '新会话',
+                        updated_at: s.updated_at
+                    }));
+                    renderSessions();
+                }
+            } catch (e) {
+                console.error('加载会话列表失败', e);
+            }
+        }
+
+        function logout() {
+            authToken = null;
+            userUuid = null;
+            $('appPage').classList.remove('active');
+            $('authPage').style.display = 'flex';
+            $('loginPassword').value = '';
+            showAuthError('');
+        }
+
+        // ====== 会话管理 ======
+        function newChat() {
+            // 延迟创建：不发消息不真创建，session_id 用 default
+            currentSessionId = null;
+            $('chatTitle').textContent = '新会话';
+            renderSessions();
+            clearMessages();
+        }
+
+        async function switchSession(id) {
+            currentSessionId = id;
+            const s = sessions.find(x => x.id === id);
+            $('chatTitle').textContent = s ? s.title : '会话';
+            renderSessions();
+            // 有缓存直接用，没有则加载历史
+            if (sessionCache[id]) {
+                renderMessages(sessionCache[id]);
+            } else {
+                await loadHistory(id);
+            }
+        }
+
+        async function loadHistory(sessionId) {
+            try {
+                const data = await api(`/api/sessions/${sessionId}/history`);
+                if (data.code === 0) {
+                    const msgs = data.data.messages;
+                    sessionCache[sessionId] = msgs;   // 缓存
+                    renderMessages(msgs);
+                } else {
+                    addMessage('error', data.message);
+                }
+            } catch (e) {
+                addMessage('error', '加载历史失败：' + e.message);
+            }
+        }
+
+        function renderMessages(msgs) {
+            $('messages').innerHTML = '';   // 清空
+            msgs.forEach(m => {
+                if (m.role === 'user' || m.role === 'assistant') {
+                    addMessage(m.role === 'user' ? 'user' : 'assistant', m.content);
+                }
+            });
+        }
+
+        function renderSessions() {
+            const box = $('sessionList');
+            box.innerHTML = sessions.map(s =>
+                `<div class="session-item ${s.id === currentSessionId ? 'active' : ''}" onclick="switchSession('${s.id}')">
+                    <span class="session-title">${s.title}</span>
+                    <span class="session-menu" onclick="event.stopPropagation(); showSessionMenu('${s.id}', this)">
+                        <span class="menu-dots">⋯</span>
+                    </span>
+                </div>`
+            ).join('');
+        }
+
+        // ====== 会话菜单（重命名/删除） ======
+        function showSessionMenu(sessionId, el) {
+            const action = prompt('输入新会话名称，或留空删除会话：\n（输入名称=重命名，点取消=关闭）');
+            if (action === null) return;   // 用户取消
+            if (action.trim() === '') {
+                // 空 → 删除
+                if (confirm('确定删除该会话吗？')) deleteSession(sessionId);
+            } else {
+                renameSession(sessionId, action.trim());
+            }
+        }
+
+        async function renameSession(sessionId, newName) {
+            try {
+                const data = await api(`/api/sessions/${sessionId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ session_name: newName })
+                });
+                if (data.code === 0) {
+                    const s = sessions.find(x => x.id === sessionId);
+                    if (s) s.title = newName;
+                    if (currentSessionId === sessionId) $('chatTitle').textContent = newName;
+                    renderSessions();
+                } else {
+                    alert(data.message);
+                }
+            } catch (e) {
+                alert('重命名失败：' + e.message);
+            }
+        }
+
+        async function deleteSession(sessionId) {
+            try {
+                const data = await api(`/api/sessions/${sessionId}`, { method: 'DELETE' });
+                if (data.code === 0) {
+                    sessions = sessions.filter(s => s.id !== sessionId);
+                    delete sessionCache[sessionId];
+                    if (currentSessionId === sessionId) newChat();
+                    renderSessions();
+                } else {
+                    alert(data.message);
+                }
+            } catch (e) {
+                alert('删除失败：' + e.message);
+            }
+        }
+
+        // ====== 模式切换 ======
+        const MODE_NAMES = { default: '默认', learning: '学习模式', interview: '面试模式', roleplay: '角色扮演' };
+        function switchMode(mode) {
+            currentMode = mode;
+            document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+            event.target.classList.add('active');
+            $('chatMode').textContent = MODE_NAMES[mode];
+        }
+
+        // ====== 消息 ======
+        function clearMessages() {
+            $('messages').innerHTML = '<div class="empty-state" id="emptyState"><div class="icon">◆</div><div class="hint">上传文档或输入问题，开始使用知识库</div></div>';
+        }
+
+        function addMessage(role, content, source) {
+            const empty = $('emptyState');
+            if (empty) empty.remove();
+            const box = $('messages');
+            const div = document.createElement('div');
+            div.className = 'message ' + role;
+            div.textContent = content;
+            if (role === 'assistant' && source) {
+                const src = document.createElement('span');
+                src.className = 'source';
+                src.textContent = '来源 · ' + source;
+                div.appendChild(src);
+            }
+            box.appendChild(div);
+            box.scrollTop = box.scrollHeight;
+        }
+
+        function showLoading() {
+            const div = document.createElement('div');
+            div.className = 'message loading';
+            div.id = 'loadingMsg';
+            div.textContent = '正在检索';
+            $('messages').appendChild(div);
+        }
+        function removeLoading() {
+            const el = $('loadingMsg');
+            if (el) el.remove();
+        }
+
+        // ====== 文件 ======
+        $('fileInput').addEventListener('change', function() {
+            selectedFile = this.files[0];
+            if (selectedFile) {
+                $('fileName').textContent = selectedFile.name;
+                $('fileInfo').style.display = 'flex';
+            }
+        });
+        function cancelFile() {
+            selectedFile = null;
+            $('fileInput').value = '';
+            $('fileInfo').style.display = 'none';
+        }
+
+        async function uploadFile() {
+            const formData = new FormData();
+            formData.append('file', selectedFile);
+            formData.append('session_id', currentSessionId);
+            formData.append('scope', currentScope);   // account=账号级 / session=会话级
+            const res = await fetch(BASE_URL + '/api/upload', {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${authToken}` },   // token 鉴权
+                body: formData
+            });
+            return res.json();
+        }
+
+        // ====== 发送 ======
+        function handleKey(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        }
+
+        async function sendMessage() {
+            const input = $('questionInput');
+            const question = input.value.trim();
+            if (!question && !selectedFile) return;
+
+            if (selectedFile) {
+                addMessage('user', `上传文件：${selectedFile.name}`);
+                showLoading();
+                try {
+                    const upRes = await uploadFile();
+                    removeLoading();
+                    if (upRes.code === 0) {
+                        addMessage('assistant', `${upRes.message}（${upRes.data.chunk_count} 个文本块）`);
+                        loadFiles();   // 刷新文件列表
+                    } else if (upRes.code === 1) {
+                        addMessage('assistant', upRes.message);
+                    } else {
+                        addMessage('error', `上传失败：${upRes.message}`);
+                        return;
+                    }
+                } catch (err) {
+                    removeLoading();
+                    addMessage('error', '上传出错：' + err.message);
+                    return;
+                }
+                cancelFile();
+            }
+
+            if (question) {
+                addMessage('user', question);
+                input.value = '';
+                showLoading();
+                try {
+                    const data = await api('/api/chat', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            question,
+                            mode: currentMode,
+                            session_id: currentSessionId || "default"
+                        })
+                    });
+                    removeLoading();
+                    if (data.code === 0) {
+                        addMessage('assistant', data.data.answer);
+
+                        // 延迟创建：后端返回新 session_id 时保存
+                        if (data.data.session_id) {
+                            const isNew = !currentSessionId || currentSessionId !== data.data.session_id;
+                            currentSessionId = data.data.session_id;
+                            // 更新缓存
+                            if (!sessionCache[currentSessionId]) sessionCache[currentSessionId] = [];
+                            sessionCache[currentSessionId].push({ role: 'user', content: question });
+                            sessionCache[currentSessionId].push({ role: 'assistant', content: data.data.answer });
+
+                            if (isNew) {
+                                // 新会话：加入列表，用问题前20字做标题
+                                const title = question.slice(0, 20) + (question.length > 20 ? '...' : '');
+                                $('chatTitle').textContent = title;
+                                sessions.unshift({ id: currentSessionId, title });
+                                renderSessions();
+                            }
+                        }
+                    } else {
+                        addMessage('error', '回复失败：' + data.message);
+                    }
+                } catch (err) {
+                    removeLoading();
+                    addMessage('error', '请求出错：' + err.message);
+                }
+            }
+        }
+
+        // ====== 文件列表（从后端加载） ======
+        async function loadFiles() {
+            try {
+                const data = await api('/api/files');
+                if (data.code === 0) {
+                    userFiles = data.data;
+                    renderFiles();
+                }
+            } catch (e) {
+                console.error('加载文件列表失败', e);
+            }
+        }
+
+        function renderFiles() {
+            const box = $('fileList');
+            box.innerHTML = userFiles.map(f =>
+                `<div class="file-item">
+                    <span class="file-icon">◆</span>
+                    <span class="file-name">${f.filename}</span>
+                    <span class="delete-btn" onclick="deleteFile(${f.id})">✕</span>
+                </div>`
+            ).join('');
+        }
+
+        async function deleteFile(fileId) {
+            if (!confirm('确定删除该文件吗？删除后无法恢复。')) return;
+            try {
+                const data = await api(`/api/files/${fileId}`, { method: 'DELETE' });
+                if (data.code === 0) {
+                    userFiles = userFiles.filter(f => f.id !== fileId);
+                    renderFiles();
+                } else {
+                    alert(data.message);
+                }
+            } catch (e) {
+                alert('删除失败：' + e.message);
+            }
+        }
+
+        // ====== 初始化 ======
+        // 开发阶段：自动进入登录页
+    </script>
+</body>
+</html>

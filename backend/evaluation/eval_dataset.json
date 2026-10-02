@@ -1,0 +1,414 @@
+{
+  "_meta": {
+    "name": "企业研发规范知识库 · 检索评测集 v1.0",
+    "doc": "阿里巴巴Java开发手册v1.4.0.pdf",
+    "doc_pages": 42,
+    "total_questions": 50,
+    "created": "2026-10-02",
+    "difficulty_dist": { "easy": 14, "medium": 26, "hard": 10 },
+    "how_to_use": "每条 question 对应 golden_snippets，检索返回的 chunk 归一化（去空白）后包含任一片段即判定命中",
+    "note": "问题采用自然语言口语化表述，刻意避开条款标题，用于检验语义检索能力而非关键词匹配"
+  },
+  "items": [
+    {
+      "id": 1,
+      "question": "我定义了一个 boolean 字段叫 isDeleted，结果框架序列化出问题了，手册里怎么规定的？",
+      "golden_snippets": ["任何布尔类型的变量", "都不要加is前缀", "序列化错误"],
+      "reference": "POJO 类中的任何布尔类型的变量，都不要加 is 前缀，否则部分框架解析会引起序列化错误。",
+      "category": "编程规约/命名风格",
+      "difficulty": "medium"
+    },
+    {
+      "id": 2,
+      "question": "类名应该用什么命名风格？",
+      "golden_snippets": ["UpperCamelCase"],
+      "reference": "类名使用 UpperCamelCase 风格，但 DO/BO/DTO/VO/AO/PO/UID 等例外。",
+      "category": "编程规约/命名风格",
+      "difficulty": "easy"
+    },
+    {
+      "id": 3,
+      "question": "常量命名有什么要求，单词之间怎么分隔？",
+      "golden_snippets": ["常量命名全部大写", "单词间用下划线隔开", "力求语义表达完整清楚"],
+      "reference": "常量命名全部大写，单词间用下划线隔开，力求语义表达完整清楚，不要嫌名字长。",
+      "category": "编程规约/命名风格",
+      "difficulty": "easy"
+    },
+    {
+      "id": 4,
+      "question": "定义数组的时候中括号应该放在哪儿？",
+      "golden_snippets": ["类型与中括号紧挨相连"],
+      "reference": "类型与中括号紧挨相连来表示数组。",
+      "category": "编程规约/命名风格",
+      "difficulty": "easy"
+    },
+    {
+      "id": 5,
+      "question": "包名命名有什么规矩，能不能用大写？",
+      "golden_snippets": ["包名统一使用小写", "点分隔符之间有且仅有一个自然语义的英语单词"],
+      "reference": "包名统一使用小写，点分隔符之间有且仅有一个自然语义的英语单词。包名统一使用单数形式。",
+      "category": "编程规约/命名风格",
+      "difficulty": "easy"
+    },
+    {
+      "id": 6,
+      "question": "代码里直接写了一个没定义过的数字，比如 if (status == 3)，这样写合规吗？",
+      "golden_snippets": ["魔法值", "未经预先定义的常量"],
+      "reference": "不允许任何魔法值（即未经预先定义的常量）直接出现在代码中。",
+      "category": "编程规约/常量定义",
+      "difficulty": "medium"
+    },
+    {
+      "id": 7,
+      "question": "给 long 类型变量赋值的时候，数字后面那个 L 用大写还是小写？",
+      "golden_snippets": ["大写的L", "数值后使用大写的L"],
+      "reference": "在 long 或者 Long 赋值时，数值后使用大写的 L，不能是小写的 l，小写容易跟数字 1 混淆。",
+      "category": "编程规约/常量定义",
+      "difficulty": "medium"
+    },
+    {
+      "id": 8,
+      "question": "代码缩进用 tab 还是空格？几个空格？",
+      "golden_snippets": ["4个空格缩进", "禁止使用tab字符"],
+      "reference": "采用 4 个空格缩进，禁止使用 tab 字符。",
+      "category": "编程规约/代码格式",
+      "difficulty": "easy"
+    },
+    {
+      "id": 9,
+      "question": "一行代码写多长算太长？超了要怎么办？",
+      "golden_snippets": ["单行字符数限制不超过120个", "120个"],
+      "reference": "单行字符数限制不超过 120 个，超出需要换行。",
+      "category": "编程规约/代码格式",
+      "difficulty": "medium"
+    },
+    {
+      "id": 10,
+      "question": "一个方法最多写多少行比较合适？",
+      "golden_snippets": ["单个方法的总行数不超过80行", "80行"],
+      "reference": "单个方法的总行数不超过 80 行。",
+      "category": "编程规约/代码格式",
+      "difficulty": "medium"
+    },
+    {
+      "id": 11,
+      "question": "用 equals 比较的时候老是报空指针，有什么推荐写法？",
+      "golden_snippets": ["应使用常量或确定有值的对象来调用equals", "空指针异常"],
+      "reference": "Object 的 equals 方法容易抛空指针异常，应使用常量或确定有值的对象来调用 equals。",
+      "category": "编程规约/OOP规约",
+      "difficulty": "medium"
+    },
+    {
+      "id": 12,
+      "question": "两个 Integer 对象值相等，能用 == 比较吗？",
+      "golden_snippets": ["全部使用equals方法比较", "整型包装类对象之间值的比较"],
+      "reference": "所有整型包装类对象之间值的比较，全部使用 equals 方法比较。",
+      "category": "编程规约/OOP规约",
+      "difficulty": "medium"
+    },
+    {
+      "id": 13,
+      "question": "想把 double 转成 BigDecimal，为什么不能用 new BigDecimal(0.1)？",
+      "golden_snippets": ["禁止使用构造方法BigDecimal(double)", "BigDecimal(double)"],
+      "reference": "禁止使用构造方法 BigDecimal(double) 的方式把 double 值转化为 BigDecimal 对象，存在精度损失风险。",
+      "category": "编程规约/OOP规约",
+      "difficulty": "hard"
+    },
+    {
+      "id": 14,
+      "question": "重写父类方法的时候，一定要加什么注解？",
+      "golden_snippets": ["@Override"],
+      "reference": "所有的覆写方法，必须加 @Override 注解。",
+      "category": "编程规约/OOP规约",
+      "difficulty": "easy"
+    },
+    {
+      "id": 15,
+      "question": "能用对象引用去调用这个类的静态方法吗？",
+      "golden_snippets": ["避免通过一个类的对象引用访问此类的静态变量或静态方法"],
+      "reference": "避免通过一个类的对象引用访问此类的静态变量或静态方法，无谓增加编译器解析成本。",
+      "category": "编程规约/OOP规约",
+      "difficulty": "medium"
+    },
+    {
+      "id": 16,
+      "question": "循环里做字符串拼接，用什么方式性能更好？",
+      "golden_snippets": ["使用StringBuilder的append方法进行扩展", "StringBuilder"],
+      "reference": "循环体内，字符串的连接方式，使用 StringBuilder 的 append 方法进行扩展。",
+      "category": "编程规约/OOP规约",
+      "difficulty": "medium"
+    },
+    {
+      "id": 17,
+      "question": "重写 equals 之后，hashCode 要不要一起重写？",
+      "golden_snippets": ["只要重写equals", "就必须重写hashCode"],
+      "reference": "只要重写 equals，就必须重写 hashCode。因为 Set 存储的是不重复的对象，依据 hashCode 和 equals 进行判断。",
+      "category": "编程规约/集合处理",
+      "difficulty": "medium"
+    },
+    {
+      "id": 18,
+      "question": "subList 得到的结果能强转成 ArrayList 吗？",
+      "golden_snippets": ["subList结果不可强转成ArrayList", "不可强转成ArrayList"],
+      "reference": "ArrayList 的 subList 结果不可强转成 ArrayList，否则会抛出 ClassCastException 异常。",
+      "category": "编程规约/集合处理",
+      "difficulty": "hard"
+    },
+    {
+      "id": 19,
+      "question": "Arrays.asList 转出来的集合，为什么 add 会报错？",
+      "golden_snippets": ["不能使用其修改集合相关的方法", "Arrays.asList"],
+      "reference": "使用工具类 Arrays.asList() 把数组转换成集合时，不能使用其修改集合相关的方法，它的 add/remove/clear 方法会抛出 UnsupportedOperationException。",
+      "category": "编程规约/集合处理",
+      "difficulty": "medium"
+    },
+    {
+      "id": 20,
+      "question": "在 foreach 循环里边遍历边删除元素会怎样？",
+      "golden_snippets": ["不要在foreach循环里进行元素的remove/add操作", "Iterator方式"],
+      "reference": "不要在 foreach 循环里进行元素的 remove/add 操作。remove 元素请使用 Iterator 方式，如果并发操作，需要对 Iterator 对象加锁。",
+      "category": "编程规约/集合处理",
+      "difficulty": "medium"
+    },
+    {
+      "id": 21,
+      "question": "遍历 Map 的时候，用 keySet 好还是 entrySet 好？",
+      "golden_snippets": ["使用entrySet遍历Map类集合KV", "entrySet"],
+      "reference": "使用 entrySet 遍历 Map 类集合 KV，而不是 keySet 方式进行遍历。keySet 其实是遍历了 2 次。",
+      "category": "编程规约/集合处理",
+      "difficulty": "medium"
+    },
+    {
+      "id": 22,
+      "question": "项目里能直接 new Thread 吗？线程该怎么创建？",
+      "golden_snippets": ["线程资源必须通过线程池提供", "不允许在应用中自行显式创建线程"],
+      "reference": "线程资源必须通过线程池提供，不允许在应用中自行显式创建线程。",
+      "category": "编程规约/并发处理",
+      "difficulty": "medium"
+    },
+    {
+      "id": 23,
+      "question": "创建线程池能用 Executors 工厂方法吗？",
+      "golden_snippets": ["线程池不允许使用Executors去创建", "ThreadPoolExecutor的方式"],
+      "reference": "线程池不允许使用 Executors 去创建，而是通过 ThreadPoolExecutor 的方式，规避资源耗尽风险。",
+      "category": "编程规约/并发处理",
+      "difficulty": "medium"
+    },
+    {
+      "id": 24,
+      "question": "SimpleDateFormat 定义成 static 共享变量有什么问题？",
+      "golden_snippets": ["SimpleDateFormat是线程不安全的类", "不要定义为static变量"],
+      "reference": "SimpleDateFormat 是线程不安全的类，一般不要定义为 static 变量。",
+      "category": "编程规约/并发处理",
+      "difficulty": "medium"
+    },
+    {
+      "id": 25,
+      "question": "ThreadLocal 用完需要清理吗？",
+      "golden_snippets": ["必须回收自定义的ThreadLocal变量", "ThreadLocal"],
+      "reference": "必须回收自定义的 ThreadLocal 变量，尤其在线程池场景下，线程经常会被复用。",
+      "category": "编程规约/并发处理",
+      "difficulty": "medium"
+    },
+    {
+      "id": 26,
+      "question": "创建线程的时候线程名要怎么起？",
+      "golden_snippets": ["指定有意义的线程名称", "创建线程或线程池时请指定有意义的线程名称"],
+      "reference": "创建线程或线程池时请指定有意义的线程名称，方便出错时回溯。",
+      "category": "编程规约/并发处理",
+      "difficulty": "easy"
+    },
+    {
+      "id": 27,
+      "question": "switch 语句里每个 case 后面忘了写 break 会怎么样？手册怎么要求？",
+      "golden_snippets": ["每个case要么通过continue/break/return等来终止", "break"],
+      "reference": "在一个 switch 块内，每个 case 要么通过 continue/break/return 等来终止，要么注释说明程序将继续执行到哪一个 case 为止。",
+      "category": "编程规约/控制语句",
+      "difficulty": "medium"
+    },
+    {
+      "id": 28,
+      "question": "if 后面只有一行代码，能不能省略大括号？",
+      "golden_snippets": ["必须使用大括号", "在if/else/for/while/do语句中必须使用大括号"],
+      "reference": "在 if/else/for/while/do 语句中必须使用大括号，即使只有一行代码。",
+      "category": "编程规约/控制语句",
+      "difficulty": "easy"
+    },
+    {
+      "id": 29,
+      "question": "高并发场景下用「等于某个值」作为循环退出条件，有什么风险？",
+      "golden_snippets": ["避免使用等于判断作为中断或退出的条件", "高并发场景中"],
+      "reference": "在高并发场景中，避免使用「等于」判断作为中断或退出的条件，可能被击穿，应使用大于或小于的区间判断。",
+      "category": "编程规约/控制语句",
+      "difficulty": "hard"
+    },
+    {
+      "id": 30,
+      "question": "类和方法的注释要用什么规范来写？",
+      "golden_snippets": ["Javadoc规范", "类、类属性、类方法的注释必须使用Javadoc规范"],
+      "reference": "类、类属性、类方法的注释必须使用 Javadoc 规范，使用 /** 内容 */ 格式。",
+      "category": "编程规约/注释规约",
+      "difficulty": "easy"
+    },
+    {
+      "id": 31,
+      "question": "类上要标注创建者和日期吗？",
+      "golden_snippets": ["所有的类都必须添加创建者和创建日期"],
+      "reference": "所有的类都必须添加创建者和创建日期。",
+      "category": "编程规约/注释规约",
+      "difficulty": "easy"
+    },
+    {
+      "id": 32,
+      "question": "在 finally 块里写 return 会有什么问题？",
+      "golden_snippets": ["不要在finally块中使用return"],
+      "reference": "不要在 finally 块中使用 return，finally 块中的 return 返回后方法结束执行，不会再执行 try 块中的 return 语句。",
+      "category": "异常日志/异常处理",
+      "difficulty": "medium"
+    },
+    {
+      "id": 33,
+      "question": "代码里能直接用 Log4j 或 Logback 的 API 打日志吗？",
+      "golden_snippets": ["不可直接使用日志系统", "日志系统（Log4j、Logback）中的API"],
+      "reference": "应用中不可直接使用日志系统（Log4j、Logback）中的 API，而应依赖使用日志框架 SLF4J 中的 API。",
+      "category": "异常日志/日志规约",
+      "difficulty": "medium"
+    },
+    {
+      "id": 34,
+      "question": "线上日志文件一般要保留多久？",
+      "golden_snippets": ["所有日志文件至少保存15天", "15天"],
+      "reference": "所有日志文件至少保存 15 天，因为有些异常具备以「周」为频次发生的特点。",
+      "category": "异常日志/日志规约",
+      "difficulty": "medium"
+    },
+    {
+      "id": 35,
+      "question": "打日志的时候字符串怎么拼接比较好？",
+      "golden_snippets": ["字符串变量之间的拼接使用占位符的方式", "占位符"],
+      "reference": "在日志输出时，字符串变量之间的拼接使用占位符的方式，避免无谓的字符串拼接开销。",
+      "category": "异常日志/日志规约",
+      "difficulty": "medium"
+    },
+    {
+      "id": 36,
+      "question": "捕获到异常记录日志时，日志里应该包含哪些信息？",
+      "golden_snippets": ["案发现场信息和异常堆栈信息"],
+      "reference": "异常信息应该包括两类信息：案发现场信息和异常堆栈信息。",
+      "category": "异常日志/日志规约",
+      "difficulty": "medium"
+    },
+    {
+      "id": 37,
+      "question": "好的单元测试要遵守什么原则？AIR 是哪三个词？",
+      "golden_snippets": ["AIR原则", "自动化、独立性、可重复"],
+      "reference": "好的单元测试必须遵守 AIR 原则：A：Automatic（自动化），I：Independent（独立性），R：Repeatable（可重复）。",
+      "category": "单元测试",
+      "difficulty": "medium"
+    },
+    {
+      "id": 38,
+      "question": "单元测试的语句覆盖率要达到多少？核心模块呢？",
+      "golden_snippets": ["语句覆盖率达到70%", "核心模块的语句覆盖率和分支覆盖率都要达到100%"],
+      "reference": "语句覆盖率达到 70%；核心模块的语句覆盖率和分支覆盖率都要达到 100%。",
+      "category": "单元测试",
+      "difficulty": "medium"
+    },
+    {
+      "id": 39,
+      "question": "单元测试代码应该放在项目的哪个目录下？",
+      "golden_snippets": ["src/test/java"],
+      "reference": "单元测试代码必须写在如下工程目录：src/test/java，不允许写在业务代码目录下。",
+      "category": "单元测试",
+      "difficulty": "easy"
+    },
+    {
+      "id": 40,
+      "question": "页面上展示用户的手机号或身份证，能直接显示吗？",
+      "golden_snippets": ["必须对展示数据进行脱敏", "用户敏感数据禁止直接展示"],
+      "reference": "用户敏感数据禁止直接展示，必须对展示数据进行脱敏。",
+      "category": "安全规约",
+      "difficulty": "medium"
+    },
+    {
+      "id": 41,
+      "question": "SQL 里拼接用户传进来的参数，有什么安全风险？该怎么防止？",
+      "golden_snippets": ["参数绑定", "METADATA字段值限定", "SQL注入"],
+      "reference": "用户输入的 SQL 参数严格使用参数绑定或者 METADATA 字段值限定，防止 SQL 注入，禁止字符串拼接 SQL。",
+      "category": "安全规约",
+      "difficulty": "medium"
+    },
+    {
+      "id": 42,
+      "question": "表单和 AJAX 提交要做什么安全过滤？",
+      "golden_snippets": ["CSRF安全过滤", "CSRF"],
+      "reference": "表单、AJAX 提交必须执行 CSRF 安全过滤。",
+      "category": "安全规约",
+      "difficulty": "easy"
+    },
+    {
+      "id": 43,
+      "question": "数据库里表示「是/否」的字段该怎么命名，用什么类型？",
+      "golden_snippets": ["is_xxx的方式命名", "unsignedtinyint", "unsigned tinyint"],
+      "reference": "表达是与否概念的字段，必须使用 is_xxx 的方式命名，数据类型是 unsigned tinyint（1 表示是，0 表示否）。",
+      "category": "MySQL数据库/建表规约",
+      "difficulty": "medium"
+    },
+    {
+      "id": 44,
+      "question": "表名能用复数吗？比如 users 还是 user？",
+      "golden_snippets": ["表名不使用复数名词"],
+      "reference": "表名不使用复数名词。",
+      "category": "MySQL数据库/建表规约",
+      "difficulty": "easy"
+    },
+    {
+      "id": 45,
+      "question": "金额字段用什么类型？能用 float 吗？",
+      "golden_snippets": ["小数类型为decimal", "禁止使用float和double"],
+      "reference": "小数类型为 decimal，禁止使用 float 和 double，存放数据范围超过 decimal 范围时建议拆成整数和小数分开存储。",
+      "category": "MySQL数据库/建表规约",
+      "difficulty": "medium"
+    },
+    {
+      "id": 46,
+      "question": "每张表必须有哪三个字段？",
+      "golden_snippets": ["表必备三字段", "create_time", "update_time"],
+      "reference": "表必备三字段：id、create_time、update_time。",
+      "category": "MySQL数据库/建表规约",
+      "difficulty": "medium"
+    },
+    {
+      "id": 47,
+      "question": "统计行数的时候用 count(*) 还是 count(列名)？",
+      "golden_snippets": ["不要使用count(列名)或count(常量)来替代count(*)", "count(*)"],
+      "reference": "不要使用 count(列名) 或 count(常量) 来替代 count(*)，count(*) 会统计值为 NULL 的行。",
+      "category": "MySQL数据库/SQL语句",
+      "difficulty": "medium"
+    },
+    {
+      "id": 48,
+      "question": "判断字段是否为 NULL，应该怎么写？",
+      "golden_snippets": ["使用ISNULL()来判断是否为NULL值", "ISNULL()"],
+      "reference": "使用 ISNULL() 来判断是否为 NULL 值，NULL <> NULL 的返回结果是 NULL，而不是 false。",
+      "category": "MySQL数据库/SQL语句",
+      "difficulty": "medium"
+    },
+    {
+      "id": 49,
+      "question": "能用外键和级联删除吗？存储过程呢？",
+      "golden_snippets": ["不得使用外键与级联", "禁止使用存储过程"],
+      "reference": "不得使用外键与级联，一切外键概念必须在应用层解决；禁止使用存储过程，存储过程难以调试和扩展。",
+      "category": "MySQL数据库/SQL语句",
+      "difficulty": "hard"
+    },
+    {
+      "id": 50,
+      "question": "一个业务对象的状态如果超过 3 个，设计文档里该用什么图来表达？",
+      "golden_snippets": ["使用状态图来表达", "状态超过3个"],
+      "reference": "如果某个业务对象的状态超过 3 个，使用状态图来表达并且明确状态变化的各个触发条件。",
+      "category": "设计规约",
+      "difficulty": "hard"
+    }
+  ]
+}

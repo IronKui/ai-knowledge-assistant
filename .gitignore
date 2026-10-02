@@ -1,0 +1,54 @@
+# ==================== 环境变量（最高优先级）====================
+.env
+.env.*
+*.env
+!.env.example
+
+# ==================== 向量库与数据库 ====================
+backend/chroma_db/
+backend/evaluation/chroma_eval/
+backend/data/
+*.sqlite3
+*.db
+*.sqlite
+
+# ==================== 模型权重（每个 1GB+，绝不入库）====================
+backend/models/
+*.safetensors
+*.bin
+*.onnx
+
+# ==================== Python ====================
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+
+# ==================== 前端 ====================
+frontend/node_modules/
+frontend/dist/
+.vite/
+
+# ==================== 日志与上传文件 ====================
+backend/uploads/
+*.log
+
+# ==================== 实验输出 ====================
+backend/evaluation/*_out.txt
+
+# ==================== 备份的 git 目录 ====================
+.git.bak/
+
+# ==================== 本地文档（不纳入版本管理）====================
+log/
+方案/
+方案.zip
+workbuddy任务/
+错误终端日志/
+项目目标.md
+.claude/
+.idea/
+.vscode/
+.DS_Store

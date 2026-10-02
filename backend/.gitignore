@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+env/
+
+# 配置文件（包含 API Key）
+.env
+
+# 向量数据库（数据太大）
+chroma_db/
+
+# 文件索引（运行时数据，每人独立）
+data/
+
+# 本地模型（太大）
+models/
+
+# 日志
+*.log
+
+# IDE
+.vscode/
+.idea/
+
+# 测试文件
+*.pdf
+*.docx
+*.xlsx
+uploads/
+
+# 对话记忆（SQLite，运行时数据）
+data/checkpoints.sqlite
+checkpoints.sqlite-*
