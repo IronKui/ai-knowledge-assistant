@@ -36,6 +36,10 @@ pyjwt
 # 缓存
 redis
 
+# 检索评测与混合检索
+rank_bm25==0.2.2
+jieba==0.42.1
+
 # OCR（图片识别）
 pytesseract
 Pillow
