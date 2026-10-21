@@ -2,6 +2,7 @@
 """下载 bge-reranker-base 重排模型（走国内镜像）"""
 import os
 import sys
+from pathlib import Path
 
 os.environ['HF_ENDPOINT'] = 'https://hf-mirror.com'
 os.environ.setdefault('HF_HUB_DISABLE_SYMLINKS_WARNING', '1')
@@ -9,7 +10,11 @@ os.environ.setdefault('HF_HUB_DISABLE_SYMLINKS_WARNING', '1')
 from huggingface_hub import hf_hub_download, list_repo_files
 
 REPO = 'BAAI/bge-reranker-base'
-LOCAL = r'E:\study-hermes\AI_project\MyProject\langchain-learn\backend\models\bge-reranker-base'
+
+# 模型统一存到 backend/models/ 下，不再依赖某台机器上的绝对路径
+BASE_DIR = Path(__file__).resolve().parent.parent   # → backend/
+LOCAL = str(BASE_DIR / 'models' / 'bge-reranker-base')
+os.makedirs(LOCAL, exist_ok=True)
 
 files = list_repo_files(REPO)
 print("仓库文件清单:")
