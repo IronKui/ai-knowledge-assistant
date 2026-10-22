@@ -134,28 +134,49 @@ python experiment_c.py    # 阶段 C（组合验证）+ 失败案例归因
 ### 1. 环境
 
 ```bash
-conda create -n rag python=3.10
+conda create -n rag python=3.11
 conda activate rag
+
+# 无 GPU 的机器务必先装 CPU 版 torch（否则 pip 会拉 CUDA 版，多占 2 GB+）
+pip install torch --index-url https://download.pytorch.org/whl/cpu
+
 pip install -r backend/requirements.txt
 ```
 
-### 2. 下载模型（约 1.5 GB）
+> Python 3.10+ 均可，本项目开发环境为 3.13。
+> 第 2 条 pip 命令只在 Linux 上必须；Windows 上 pip 默认装的就是 CPU 版。
 
-模型权重体积过大，不入库。需自行下载到 `backend/models/`：
+### 2. 下载模型（约 1.2 GB）
+
+模型权重体积过大，不入库，需自行下载到 `backend/models/`。
 
 ```bash
-# 设置 HuggingFace 镜像（国内）
-export HF_ENDPOINT=https://hf-mirror.com     # Windows: $env:HF_ENDPOINT="https://hf-mirror.com"
+# ① 设置国内镜像，并关闭 Xet 传输协议
+#    huggingface_hub >= 1.20 默认走 Xet，hf-mirror 不支持该协议，会返回 401
+export HF_ENDPOINT=https://hf-mirror.com
+export HF_HUB_DISABLE_XET=1
+# Windows PowerShell:
+#   $env:HF_ENDPOINT="https://hf-mirror.com"
+#   $env:HF_HUB_DISABLE_XET="1"
+
+# ② 向量化模型（约 95 MB）
+python -c "from huggingface_hub import snapshot_download; snapshot_download('BAAI/bge-small-zh-v1.5', local_dir='backend/models/bge-small-zh-v1.5')"
+
+# ③ 重排模型（约 1.1 GB）
+python backend/evaluation/download_reranker.py
 ```
 
-需要两个模型：
+| 模型 | 用途 | 大小 | 放置路径 |
+|:---|:---|:---|:---|
+| `BAAI/bge-small-zh-v1.5` | 向量化（离线 + 在线检索） | ~95 MB | `backend/models/bge-small-zh-v1.5/` |
+| `BAAI/bge-reranker-base` | 重排序（在线链路精排） | ~1.1 GB | `backend/models/bge-reranker-base/` |
 
-| 模型 | 用途 | 放置路径 |
-|:---|:---|:---|
-| `BAAI/bge-small-zh-v1.5` | 向量化 | `backend/models/bge-small-zh-v1.5/` |
-| `BAAI/bge-reranker-base` | 重排序 | `backend/models/bge-reranker-base/` |
-
-可利用 `backend/evaluation/download_reranker.py` 辅助下载。
+> **两个模型缺失的后果完全不同，务必注意：**
+>
+> - 向量化模型缺失：后端会在首次上传文档时**自动下载**，无感知
+> - 重排模型缺失：加载失败后**静默降级为纯向量检索**，服务照常运行，但 Recall@3 会从 0.94 掉到约 0.74，日志中仅有一行 `重排模型不可用，检索将降级为纯向量检索`
+>
+> 看到这行 WARNING，说明重排链路实际没生效——功能“看起来正常”但指标已经退化。
 
 ### 3. 下载评测语料（**跑评测才需要**）
 
@@ -208,6 +229,8 @@ npm run dev
 ```
 
 访问 http://localhost:5173
+
+> **部署到服务器时必改**：`frontend/src/api.js` 中的 `BASE_URL` 目前写死为 `http://localhost:8000`。这个地址在浏览器里指的是**访问者自己的电脑**，不是服务器。上线时需改为空字符串走同源相对路径，并在 `vite.config.js` 配 `/api` 代理（或由 Nginx 反向代理 `/api` 到后端端口）。
 
 ---
 
