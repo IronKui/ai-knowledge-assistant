@@ -7,6 +7,8 @@ python-multipart
 langchain
 langchain-community
 langchain-openai
+# init_chat_model("deepseek-*") 会按模型名推断 provider，需显式安装该 provider 包
+langchain-deepseek
 langchain-chroma
 langchain-text-splitters
 langgraph
