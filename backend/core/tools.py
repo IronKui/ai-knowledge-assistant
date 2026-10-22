@@ -25,6 +25,8 @@ model = init_chat_model(
     model="deepseek-v4-flash",
     openai_api_key=os.getenv("DEEPSEEK_API_KEY"),
     openai_api_base=os.getenv("DEEPSEEK_BASE_URL"),
+    # 知识库问答要的是“贴着文档说”，不是发挥想象力，温度调低减少发散
+    temperature=0.3,
 )
 # ========== 题目缓存（question_id → 标准答案） ==========
 quiz_cache: dict[str, str] = {}

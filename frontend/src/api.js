@@ -1,5 +1,7 @@
 // API 封装：统一处理请求和 token
-const BASE_URL = 'http://localhost:8000'
+// 留空表示走同源相对路径（/api/...），由 vite 的 proxy 转发到后端。
+// 如需指向其他后端，构建时设置环境变量 VITE_API_BASE=http://host:port
+const BASE_URL = import.meta.env.VITE_API_BASE || ''
 
 let authToken = null
 
