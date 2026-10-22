@@ -8,6 +8,7 @@ langchain
 langchain-community
 langchain-openai
 langchain-chroma
+langchain-text-splitters
 langgraph
 langgraph-checkpoint-sqlite
 rich
@@ -19,6 +20,9 @@ pydantic
 chromadb
 
 # Embedding模型
+# 注意：torch 是 sentence-transformers 的依赖，Linux 上 pip 默认会拉 CUDA 版（2GB+）。
+# 无 GPU 的机器请先单独装 CPU 版，再装本文件：
+#   pip install torch --index-url https://download.pytorch.org/whl/cpu
 sentence-transformers
 
 # 文档解析
@@ -30,7 +34,9 @@ python-dotenv
 
 # 账号系统（密码哈希 + JWT）
 passlib
-bcrypt==3.2.0
+# 必须 >=4.0.1：chromadb 要求 bcrypt>=4.0.1；3.2.0 在 Python 3.12+ 无预编译轮子
+# 上限 <4.1：4.1 起删除了 __about__ 属性，passlib 1.7.4 会报 warning
+bcrypt>=4.0.1,<4.1
 pyjwt
 
 # 缓存
@@ -41,5 +47,9 @@ rank_bm25==0.2.2
 jieba==0.42.1
 
 # OCR（图片识别）
+# 需要系统层安装 tesseract：apt install tesseract-ocr tesseract-ocr-chi-sim
 pytesseract
 Pillow
+
+# 模型下载（evaluation/download_reranker.py 使用）
+huggingface_hub
